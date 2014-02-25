@@ -18,6 +18,9 @@
         height: 100%;
         font-family: sans-serif;
       }
+      *:focus {
+        outline: 0;
+      }
 
       #buttons {
         border-bottom: 1px solid rgba(0, 0, 15, .3);
@@ -170,7 +173,6 @@
           mkdn_btn.innerHTML = mkdn_off;
           mkdn_box.style.display = "none";
           edit_box.classList.remove("mkdn-on");
-          edit_box.onchange = null;
         } else {
           // Turn on
           mkdn_btn.innerHTML = mkdn_on;
