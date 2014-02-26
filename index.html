@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -19,7 +20,7 @@
         font-family: sans-serif;
       }
       *:focus {
-        outline: 0;
+        outline: none;
       }
 
       #buttons {
@@ -58,7 +59,7 @@
 
       #edit-box {
         width: 100%;
-        height: calc(100% - 40px);
+        height: 100%;
         margin: 0;
         font-size: 1.1em;
         border: none;
@@ -72,12 +73,13 @@
       }
       #edit-box.mkdn-on {
         width: 50%;
+        min-height: 100%;
         border-right: 1px dashed rgba(0, 0, 0, 0.7);
       }
 
       #mkdn-box {
-        width: calc(50% - 4px);
-        height: calc(100% - 40px);
+        width: 49%;
+        height: 100%;
         margin: 0;
         font-size: 1.1em;
         border: none;
@@ -103,7 +105,7 @@
       <a href="#" id="mkdn-btn"></a>
     </form>
 
-    <textarea id="edit-box" autofocus>Hello World!</textarea>
+    <div contenteditable id="edit-box" autofocus>Hello World!</div>
     <div id="mkdn-box"></div>
 
     <script src="js/markdown.min.js"></script>
@@ -119,16 +121,18 @@
 
       var mkdn_on = "Markdown: On";
       var mkdn_off = "Markdown: Off";
+      var mkdn = false;
       mkdn_btn.innerHTML = mkdn_off;
 
       var mono = {"name": "Mono-spaced", "font": "monospace"};
       var prop = {"name": "Proportional", "font": "sans-serif"};
+      var font = prop;
       font_btn.innerHTML = mono.name;
 
       save_btn.onclick = function () {
         var filename = prompt('Save with name:', '.txt');
         save_btn.download = filename;
-        save_btn.href = "data:application/octet-stream," + escape(edit_box.value);
+        save_btn.href = "data:application/octet-stream," + escape(edit_box.innerHTML);
       };
 
       open_btn.onclick = function () {
@@ -147,7 +151,7 @@
 
         var reader = new FileReader();
         reader.onload = function(e) {
-          edit_box.value = e.target.result;
+          edit_box.innerHTML = e.target.result.replace(/\n/g, '<br>');;
 
           buttons.reset();
         };
@@ -156,57 +160,90 @@
       }
 
       font_btn.onclick = function () {
-        if (font_btn.innerHTML == mono.name) {
-          font_btn.innerHTML = prop.name;
-          var font = mono.font;
+        if (font == prop) {
+          font = mono;
         } else {
-          font_btn.innerHTML = mono.name;
-          var font = prop.font;
+          font = prop;
         }
-        edit_box.style.fontFamily = font;
+        update_font();
         return false;
       };
 
-      mkdn_btn.onclick = function () {
-        if (mkdn_btn.innerHTML == mkdn_on) {
-          // Turn off
-          mkdn_btn.innerHTML = mkdn_off;
-          mkdn_box.style.display = "none";
-          edit_box.classList.remove("mkdn-on");
+      function update_font() {
+        if (font == mono) {
+          font_btn.innerHTML = prop.name;
         } else {
-          // Turn on
-          mkdn_btn.innerHTML = mkdn_on;
-          mkdn_box.style.display = "inline-block";
-          edit_box.classList.add("mkdn-on");
-          update_mkdn();
+          font_btn.innerHTML = mono.name;
         }
+        edit_box.style.fontFamily = font.font;
+      }
+
+      mkdn_btn.onclick = function () {
+        if (mkdn) {
+          mkdn = false;
+        } else {
+          mkdn = true;
+        }
+        update_mkdn();
         return false;
       };
 
       function update_mkdn() {
-        console.log('husi')
-        if (mkdn_btn.innerHTML == mkdn_on) {
-          mkdn_box.innerHTML = markdown.toHTML(edit_box.value);
+        if (mkdn) {
+          // Turned on
+          mkdn_btn.innerHTML = mkdn_on;
+          mkdn_box.style.display = "inline-block";
+          edit_box.classList.add("mkdn-on");
+
+          var text = edit_box.innerHTML.replace(/< *br *\/* *>/g, '\n');
+          var text = text.replace(/&nbsp;/g, ' ');
+          mkdn_box.innerHTML = markdown.toHTML(text);
+        } else {
+          // Turned off
+          mkdn_btn.innerHTML = mkdn_off;
+          mkdn_box.style.display = "none";
+          edit_box.classList.remove("mkdn-on");
         }
       }
 
-      edit_box.addEventListener("input", update_mkdn, false);
+      edit_box.addEventListener("keyup", update_mkdn, false);
 
       /* localstorage polyfill from https://gist.github.com/350433 */
       ("undefined"==typeof window.localStorage||"undefined"==typeof window.sessionStorage)&&function(){function e(f){function e(a){var b;b=new Date;b.setTime(b.getTime()+31536E6);document.cookie="localStorage="+a+("; expires="+b.toGMTString())+"; path=/"}function g(a){a=JSON.stringify(a);"session"==f?window.name=a:e(a)}var d=function(){var a;if("session"==f)a=window.name;else a:{a=document.cookie.split(";");var b,c;for(b=0;b<a.length;b++){for(c=a[b];" "==c.charAt(0);)c=c.substring(1,c.length);if(0==c.indexOf("localStorage=")){a=c.substring(13,c.length);break a}}a=null}return a?JSON.parse(a):{}}();return{length:0,clear:function(){d={};this.length=0;"session"==f?window.name="":e("")},getItem:function(a){return void 0===d[a]?null:d[a]},key:function(a){var b=0,c;for(c in d){if(b==a)return c;b++}return null},removeItem:function(a){delete d[a];this.length--;g(d)},setItem:function(a,b){d[a]=b+"";this.length++;g(d)}}}if("undefined"==typeof window.localStorage)window.localStorage=new e("local");if("undefined"==typeof window.sessionStorage)window.sessionStorage=new e("session")}();
 
-      function save() {
-        console.log('hui')
-        localStorage.setItem("edit-box", edit_box.value);
+      function save_settings() {
+        localStorage.setItem("edit-box", edit_box.innerHTML);
+        localStorage.setItem("font", font.font);
+        localStorage.setItem("mkdn", mkdn);
+      }
+
+      function load_settings(argument) {
+        edit_box.innerHTML = localStorage.getItem("edit-box");
+
+        font = localStorage.getItem("font");
+        if (font == mono.font) {
+          font = mono;
+        } else {
+          font = prop;
+        }
+        update_font();
+
+        mkdn = localStorage.getItem("mkdn");
+        if (mkdn == 'true') {
+          mkdn = true;
+        } else {
+          mkdn = false;
+        }
+        update_mkdn();
       }
 
       if (window.localStorage) {
-        edit_box.value = localStorage.getItem("edit-box");
+        load_settings()
       }
 
-      edit_box.addEventListener("input", save, false);
-      window.addEventListener("unload", save, false);
-      setInterval(save, 500);
+      edit_box.addEventListener("keyup", save_settings, false);
+      window.addEventListener("unload", save_settings, false);
+      setInterval(save_settings, 500);
 
     </script>
 
