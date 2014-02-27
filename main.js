@@ -1,6 +1,7 @@
 var buttons = document.getElementById('buttons');
-var save_btn = document.getElementById('save-btn');
 var open_btn = document.getElementById('open-btn');
+var save_btn = document.getElementById('save-btn');
+var name_input = document.getElementById('name-input');
 var font_btn = document.getElementById('font-btn');
 var mkdn_btn = document.getElementById('mkdn-btn');
 var edit_box = document.getElementById('edit-box');
@@ -21,7 +22,10 @@ function get_edit_text() {
 }
 
 save_btn.onclick = function () {
-  var filename = prompt('Save with name:', '.txt');
+  var filename = name_input.value;
+  if (filename == '') {
+    filename = "untitled.txt";
+  }
   save_btn.download = filename;
   save_btn.href = 'data:application/octet-stream,' + escape(get_edit_text());
 };
