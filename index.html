@@ -27,7 +27,10 @@
         border-bottom: 1px solid rgba(0, 0, 15, .3);
         margin: 0;
         padding: 0;
-        height: 40px
+        height: 40px;
+        width: 100%;
+        position: fixed;
+        background-color: white;
       }
 
       [id*=btn] {
@@ -51,6 +54,16 @@
         color: rgba(0, 0, 15, .7);
       }
 
+      #font-btn span:first-child:after {
+        content: ' | ';
+        color: black;
+      }
+      #font-btn.mono span:last-child,
+      #font-btn.prop span:first-child {
+        color: rgba(0, 0, 0, .1);
+        text-shadow: 0 0 20px rgba(0, 0, 0, .65);
+      }
+
       #open-dilg {
         position: fixed;
         opacity: 0;
@@ -59,8 +72,10 @@
 
       #edit-box {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
+        height: auto;
         margin: 0;
+        margin-top: 40px;
         font-size: 1.1em;
         border: none;
         display: inline-block;
@@ -73,14 +88,15 @@
       }
       #edit-box.mkdn-on {
         width: 50%;
-        min-height: 100%;
         border-right: 1px dashed rgba(0, 0, 0, 0.7);
       }
 
       #mkdn-box {
         width: 49%;
-        height: 100%;
+        min-height: 100%;
+        height: auto;
         margin: 0;
+        margin-top: 40px;
         font-size: 1.1em;
         border: none;
         display: none;
@@ -101,7 +117,7 @@
 
       <a href="#" id="save-btn">Save</a>
       <a href="#" id="open-btn">Open</a>
-      <a href="#" id="font-btn"></a>
+      <a href="#" id="font-btn"><span>Mono-space</span><span>Proportional</span></a>
       <a href="#" id="mkdn-btn"></a>
     </form>
 
@@ -124,10 +140,9 @@
       var mkdn = false;
       mkdn_btn.innerHTML = mkdn_off;
 
-      var mono = {"name": "Mono-spaced", "font": "monospace"};
-      var prop = {"name": "Proportional", "font": "sans-serif"};
+      var mono = "monospace";
+      var prop = "sans-serif";
       var font = prop;
-      font_btn.innerHTML = mono.name;
 
       save_btn.onclick = function () {
         var filename = prompt('Save with name:', '.txt');
@@ -154,6 +169,7 @@
           edit_box.innerHTML = e.target.result.replace(/\n/g, '<br>');;
 
           buttons.reset();
+          update_mkdn();
         };
 
         reader.readAsText(file[0]);
@@ -171,11 +187,13 @@
 
       function update_font() {
         if (font == mono) {
-          font_btn.innerHTML = prop.name;
+          font_btn.classList.remove("prop");
+          font_btn.classList.add("mono");
         } else {
-          font_btn.innerHTML = mono.name;
+          font_btn.classList.remove("mono");
+          font_btn.classList.add("prop");
         }
-        edit_box.style.fontFamily = font.font;
+        edit_box.style.fontFamily = font;
       }
 
       mkdn_btn.onclick = function () {
@@ -195,9 +213,10 @@
           mkdn_box.style.display = "inline-block";
           edit_box.classList.add("mkdn-on");
 
-          var text = edit_box.innerHTML.replace(/< *br *\/* *>/g, '\n');
-          var text = text.replace(/&nbsp;/g, ' ');
+          var text = edit_box.innerHTML.replace(/< *br *\/* *>/g, "\n");
+          var text = text.replace(/&nbsp;/g, " ");
           mkdn_box.innerHTML = markdown.toHTML(text);
+
         } else {
           // Turned off
           mkdn_btn.innerHTML = mkdn_off;
@@ -213,7 +232,7 @@
 
       function save_settings() {
         localStorage.setItem("edit-box", edit_box.innerHTML);
-        localStorage.setItem("font", font.font);
+        localStorage.setItem("font", font);
         localStorage.setItem("mkdn", mkdn);
       }
 
@@ -221,7 +240,7 @@
         edit_box.innerHTML = localStorage.getItem("edit-box");
 
         font = localStorage.getItem("font");
-        if (font == mono.font) {
+        if (font == mono) {
           font = mono;
         } else {
           font = prop;
