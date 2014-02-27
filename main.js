@@ -1,7 +1,7 @@
 var buttons = document.getElementById('buttons');
 var open_btn = document.getElementById('open-btn');
 var save_btn = document.getElementById('save-btn');
-var name_input = document.getElementById('name-input');
+var file_name = document.getElementById('file-name');
 var font_btn = document.getElementById('font-btn');
 var mkdn_btn = document.getElementById('mkdn-btn');
 var edit_box = document.getElementById('edit-box');
@@ -22,7 +22,7 @@ function get_edit_text() {
 }
 
 save_btn.onclick = function () {
-  var filename = name_input.value;
+  var filename = file_name.value;
   if (filename == '') {
     filename = "untitled.txt";
   }
@@ -107,12 +107,14 @@ function update_mkdn() {
 }
 
 function save_settings() {
+  localStorage.setItem('file-name', file_name.value);
   localStorage.setItem('edit-box', edit_box.innerText);
   localStorage.setItem('font', font);
   localStorage.setItem('mkdn', mkdn);
 }
 
 function load_settings(argument) {
+  file_name.value = localStorage.getItem('file-name');
   edit_box.innerText = localStorage.getItem('edit-box');
 
   font = localStorage.getItem('font');
