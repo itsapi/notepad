@@ -16,13 +16,20 @@
   <body>
 
     <form id="buttons">
-      <input id="open-dilg" type="file" name="files[]">
+      <fieldset>
 
-      <a href="#" id="save-btn">Save</a>
-      <a href="#" id="open-btn">Open</a>
-      <input type="text">
-      <a href="#" id="font-btn"><span>Mono-space</span><span>Proportional</span></a>
-      <a href="#" id="mkdn-btn"></a>
+        <input id="open-dilg" type="file" name="files[]">
+        <a href="#" id="open-btn">Open</a>
+        <a href="#" id="save-btn">Save</a>
+        <input type="text" placeholder="File Name" id="name-input">
+
+      </fieldset>
+      <fieldset>
+
+        <a href="#" id="font-btn"><span>Mono-space</span><span>Proportional</span></a>
+        <a href="#" id="mkdn-btn"></a>
+
+      </fieldset>
     </form>
 
     <div contenteditable id="edit-box" autofocus>Hello World!</div>
