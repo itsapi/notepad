@@ -145,6 +145,8 @@ if (window.localStorage) {
   load_settings()
 }
 
-edit_box.addEventListener('input', update_mkdn, false);
-edit_box.addEventListener('input', save_settings, false);
+edit_box.addEventListener('input', function () {
+  update_mkdn();
+  save_settings();
+}, false);
 window.addEventListener('unload', save_settings, false);
