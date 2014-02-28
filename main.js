@@ -60,6 +60,8 @@ var spell_toggle = new ToggleBtn(
   function (value) {
     save_settings();
     edit_box.spellcheck = value;
+    edit_box.innerText = edit_box.innerText;
+    edit_box.focus();
   });
 spell_btn.onclick = function () { spell_toggle.toggle(); };
 
