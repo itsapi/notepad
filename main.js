@@ -120,6 +120,22 @@ font_toggle.cb(font_toggle.value);
 mkdn_toggle.cb(mkdn_toggle.value);
 spell_toggle.cb(spell_toggle.value);
 
+function update_mkdn() {
+  if (mkdn_toggle.value) {
+    // Turned on
+    mkdn_box.style.display = 'inline-block';
+    edit_box.classList.add('mkdn-on');
+
+    var text = get_edit_text();
+    mkdn_box.innerHTML = markdown.toHTML(text);
+
+  } else {
+    // Turned off
+    mkdn_box.style.display = 'none';
+    edit_box.classList.remove('mkdn-on');
+  }
+}
+
 function get_edit_text() {
   return edit_box.innerText.replace(/\u00a0/g, ' ');
 }
@@ -127,7 +143,7 @@ function get_edit_text() {
 save_btn.onclick = function () {
   var filename = file_name.value;
   if (filename == '') {
-    filename = "untitled.txt";
+    filename = 'untitled.txt';
   }
   save_btn.download = filename;
   save_btn.href = 'data:application/octet-stream,' + escape(get_edit_text());
@@ -164,23 +180,6 @@ function open_file(e) {
 
   reader.readAsText(file[0]);
 }
-
-function update_mkdn() {
-  if (mkdn_toggle.value) {
-    // Turned on
-    mkdn_box.style.display = 'inline-block';
-    edit_box.classList.add('mkdn-on');
-
-    var text = get_edit_text();
-    mkdn_box.innerHTML = markdown.toHTML(text);
-
-  } else {
-    // Turned off
-    mkdn_box.style.display = 'none';
-    edit_box.classList.remove('mkdn-on');
-  }
-}
-
 
 edit_box.addEventListener('input', function () {
   update_mkdn();
