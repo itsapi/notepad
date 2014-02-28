@@ -136,6 +136,12 @@ function update_mkdn() {
   }
 }
 
+edit_box.addEventListener('input', function () {
+  update_mkdn();
+  save_settings();
+}, false);
+window.addEventListener('unload', save_settings, false);
+
 function get_edit_text() {
   return edit_box.innerText.replace(/\u00a0/g, ' ');
 }
@@ -158,8 +164,6 @@ open_btn.onclick = function () {
   return false;
 };
 
-open_dilg.addEventListener('change', open_file, false);
-
 function open_file(e) {
   var file = e.target.files;
 
@@ -181,8 +185,4 @@ function open_file(e) {
   reader.readAsText(file[0]);
 }
 
-edit_box.addEventListener('input', function () {
-  update_mkdn();
-  save_settings();
-}, false);
-window.addEventListener('unload', save_settings, false);
+open_dilg.addEventListener('change', open_file, false);
