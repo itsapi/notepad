@@ -69,6 +69,7 @@ html, body {
   padding: 10px;
   overflow: auto;
   font-size: 1.1em;
+  white-space: pre-wrap;
   border: none;
   font-family: sans-serif;
   -webkit-box-sizing: border-box;

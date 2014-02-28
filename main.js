@@ -137,6 +137,7 @@ function update_mkdn() {
 }
 
 edit_box.addEventListener('input', function () {
+  edit_box.innerText = get_edit_text();
   update_mkdn();
   save_settings();
 }, false);
@@ -176,7 +177,7 @@ function open_file(e) {
     file_name.value = this.file.name;
     file_name.type = 'text';
 
-    edit_box.innerText = e.target.result.replace(/ /g, '\u00a0');
+    edit_box.innerText = e.target.result;
 
     buttons.reset();
     update_mkdn();
