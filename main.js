@@ -4,9 +4,41 @@ var save_btn = document.getElementById('save-btn');
 var file_name = document.getElementById('file-name');
 var font_btn = document.getElementById('font-btn');
 var mkdn_btn = document.getElementById('mkdn-btn');
+var spell_btn = document.getElementById('spell-btn');
 var edit_box = document.getElementById('edit-box');
 var open_dilg = document.getElementById('open-dilg');
 var mkdn_box = document.getElementById('mkdn-box');
+
+function toggle_btn(element, name, cb) {
+  this.cb = cb;
+  this.element = element;
+
+  this.on = name + ': On';
+  this.off = name + ': Off';
+  this.value = true;
+
+  this.element.innerText = this.on;
+  this.cb(this.value);
+
+  this.toggle = function () {
+    if (this.value) {
+      this.value = false;
+      this.element.innerText = this.off;
+    } else {
+      this.value = true;
+      this.element.innerText = this.on;
+    }
+    this.cb(this.value);
+  }
+}
+
+var spell_toggle = new toggle_btn(
+  spell_btn,
+  'Spell Check',
+  function (value) {
+    edit_box.spellcheck = value;
+  });
+spell_btn.onclick = function () { spell_toggle.toggle() }
 
 var mkdn_on = 'Markdown: On';
 var mkdn_off = 'Markdown: Off';
