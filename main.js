@@ -9,7 +9,7 @@ var edit_box = document.getElementById('edit-box');
 var open_dilg = document.getElementById('open-dilg');
 var mkdn_box = document.getElementById('mkdn-box');
 
-function toggle_btn(element, name, cb) {
+function ToggleBtn(element, name, cb) {
   this.cb = cb;
   this.element = element;
 
@@ -18,36 +18,92 @@ function toggle_btn(element, name, cb) {
   this.value = true;
 
   this.element.innerText = this.on;
-  this.cb(this.value);
 
   this.toggle = function () {
     if (this.value) {
-      this.value = false;
       this.element.innerText = this.off;
+      this.value = false;
     } else {
-      this.value = true;
       this.element.innerText = this.on;
+      this.value = true;
     }
     this.cb(this.value);
-  }
+  };
+
+  this.set = function (value) {
+    this.value = value;
+    if (this.value) {
+      this.element.innerText = this.on;
+    } else {
+      this.element.innerText = this.off;
+    }
+    this.cb(this.value);
+  };
 }
 
-var spell_toggle = new toggle_btn(
+var font_toggle = new ToggleBtn(
+  font_btn,
+  'Mono-space',
+  function (value) {
+    save_settings();
+    if (value) {
+      edit_box.style.fontFamily = 'monospace';
+    } else {
+      edit_box.style.fontFamily = 'sans-serif';
+    }
+  });
+font_btn.onclick = function () { font_toggle.toggle(); };
+
+var spell_toggle = new ToggleBtn(
   spell_btn,
   'Spell Check',
   function (value) {
+    save_settings();
     edit_box.spellcheck = value;
   });
-spell_btn.onclick = function () { spell_toggle.toggle() }
+spell_btn.onclick = function () { spell_toggle.toggle(); };
 
-var mkdn_on = 'Markdown: On';
-var mkdn_off = 'Markdown: Off';
-var mkdn = false;
-mkdn_btn.innerText = mkdn_off;
+var mkdn_toggle = new ToggleBtn(
+  mkdn_btn,
+  'Markdown',
+  function (value) {
+    save_settings();
+    update_mkdn();
+  });
+mkdn_btn.onclick = function () { mkdn_toggle.toggle(); };
 
-var mono = 'monospace';
-var prop = 'sans-serif';
-var font = prop;
+function save_settings() {
+  localStorage.setItem('file-name', file_name.value);
+  localStorage.setItem('edit-box', edit_box.innerText);
+  localStorage.setItem('font', font_toggle.value);
+  localStorage.setItem('mkdn', mkdn_toggle.value);
+  localStorage.setItem('spell', spell_toggle.value);
+}
+
+function load_settings() {
+  file_name.value = localStorage.getItem('file-name');
+  edit_box.innerText = localStorage.getItem('edit-box');
+
+  var font = localStorage.getItem('font');
+  font = (font == 'true') ? true : false
+
+  var mkdn = localStorage.getItem('mkdn');
+  mkdn = (mkdn == 'true') ? true : false
+
+  var spell = localStorage.getItem('spell');
+  spell = (spell == 'true') ? true : false
+
+  font_toggle.set(font);
+  mkdn_toggle.set(mkdn);
+  spell_toggle.set(spell);
+}
+
+if (window.localStorage) {
+  load_settings()
+}
+font_toggle.cb(font_toggle.value);
+spell_toggle.cb(spell_toggle.value);
+mkdn_toggle.cb(mkdn_toggle.value);
 
 function get_edit_text() {
   return edit_box.innerText.replace(/\u00a0/g, ' ');
@@ -94,43 +150,9 @@ function open_file(e) {
   reader.readAsText(file[0]);
 }
 
-font_btn.onclick = function () {
-  if (font == prop) {
-    font = mono;
-  } else {
-    font = prop;
-  }
-  update_font();
-  save_settings();
-  return false;
-};
-
-function update_font() {
-  if (font == mono) {
-    font_btn.classList.remove('prop');
-    font_btn.classList.add('mono');
-  } else {
-    font_btn.classList.remove('mono');
-    font_btn.classList.add('prop');
-  }
-  edit_box.style.fontFamily = font;
-}
-
-mkdn_btn.onclick = function () {
-  if (mkdn) {
-    mkdn = false;
-  } else {
-    mkdn = true;
-  }
-  update_mkdn();
-  save_settings();
-  return false;
-};
-
 function update_mkdn() {
-  if (mkdn) {
+  if (mkdn_toggle.value) {
     // Turned on
-    mkdn_btn.innerText = mkdn_on;
     mkdn_box.style.display = 'inline-block';
     edit_box.classList.add('mkdn-on');
 
@@ -139,43 +161,11 @@ function update_mkdn() {
 
   } else {
     // Turned off
-    mkdn_btn.innerText = mkdn_off;
     mkdn_box.style.display = 'none';
     edit_box.classList.remove('mkdn-on');
   }
 }
 
-function save_settings() {
-  localStorage.setItem('file-name', file_name.value);
-  localStorage.setItem('edit-box', edit_box.innerText);
-  localStorage.setItem('font', font);
-  localStorage.setItem('mkdn', mkdn);
-}
-
-function load_settings(argument) {
-  file_name.value = localStorage.getItem('file-name');
-  edit_box.innerText = localStorage.getItem('edit-box');
-
-  font = localStorage.getItem('font');
-  if (font == mono) {
-    font = mono;
-  } else {
-    font = prop;
-  }
-  update_font();
-
-  mkdn = localStorage.getItem('mkdn');
-  if (mkdn == 'true') {
-    mkdn = true;
-  } else {
-    mkdn = false;
-  }
-  update_mkdn();
-}
-
-if (window.localStorage) {
-  load_settings()
-}
 
 edit_box.addEventListener('input', function () {
   update_mkdn();
