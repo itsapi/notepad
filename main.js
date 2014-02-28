@@ -29,7 +29,7 @@ function toggle_btn(element, name, cb) {
       this.element.innerText = this.on;
     }
     this.cb(this.value);
-  }
+  };
 }
 
 var spell_toggle = new toggle_btn(
@@ -37,8 +37,10 @@ var spell_toggle = new toggle_btn(
   'Spell Check',
   function (value) {
     edit_box.spellcheck = value;
+    edit_box.innerText = edit_box.innerText;
+    edit_box.focus();
   });
-spell_btn.onclick = function () { spell_toggle.toggle() }
+spell_btn.onclick = function () { spell_toggle.toggle(); };
 
 var mkdn_on = 'Markdown: On';
 var mkdn_off = 'Markdown: Off';
