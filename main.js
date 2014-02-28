@@ -1,13 +1,13 @@
-var buttons = document.getElementById('buttons');
-var open_btn = document.getElementById('open-btn');
-var save_btn = document.getElementById('save-btn');
+var buttons   = document.getElementById('buttons');
+var open_btn  = document.getElementById('open-btn');
+var save_btn  = document.getElementById('save-btn');
 var file_name = document.getElementById('file-name');
-var font_btn = document.getElementById('font-btn');
-var mkdn_btn = document.getElementById('mkdn-btn');
+var font_btn  = document.getElementById('font-btn');
+var mkdn_btn  = document.getElementById('mkdn-btn');
 var spell_btn = document.getElementById('spell-btn');
-var edit_box = document.getElementById('edit-box');
+var edit_box  = document.getElementById('edit-box');
 var open_dilg = document.getElementById('open-dilg');
-var mkdn_box = document.getElementById('mkdn-box');
+var mkdn_box  = document.getElementById('mkdn-box');
 
 function ToggleBtn(element, name, cb, _default) {
   this.cb = cb;
