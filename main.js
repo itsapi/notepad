@@ -45,7 +45,14 @@ function open_file(e) {
   var file = e.target.files;
 
   var reader = new FileReader();
+  reader.file = file[0]
   reader.onload = function(e) {
+
+    // For some reason it wont set the value while it's a text input...
+    file_name.type = 'hidden';
+    file_name.value = this.file.name;
+    file_name.type = 'text';
+
     edit_box.innerText = e.target.result.replace(/ /g, '\u00a0');
 
     buttons.reset();
