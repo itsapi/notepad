@@ -75,7 +75,7 @@ var spell_toggle = new ToggleBtn(
   function (value) {
     save_settings();
     edit_box.spellcheck = value;
-    edit_box.innerText = edit_box.innerText;
+    text = edit_box.value, edit_box.value = '', edit_box.value = text;
     edit_box.focus();
   },
   true);
@@ -83,7 +83,7 @@ spell_btn.onclick = function () { spell_toggle.toggle(); };
 
 function save_settings() {
   localStorage.setItem('file-name', file_name.value);
-  localStorage.setItem('edit-box', edit_box.innerText);
+  localStorage.setItem('edit-box', edit_box.value);
   localStorage.setItem('font', font_toggle.value);
   localStorage.setItem('mkdn', mkdn_toggle.value);
   localStorage.setItem('spell', spell_toggle.value);
@@ -91,7 +91,7 @@ function save_settings() {
 
 function load_settings() {
   file_name.value = localStorage.getItem('file-name');
-  edit_box.innerText = localStorage.getItem('edit-box');
+  edit_box.value = localStorage.getItem('edit-box');
 
   var store_font = localStorage.getItem('font');
   var font = (store_font == 'true') ? true : false
@@ -126,8 +126,7 @@ function update_mkdn() {
     mkdn_box.style.display = 'inline-block';
     edit_box.classList.add('mkdn-on');
 
-    var text = get_edit_text();
-    mkdn_box.innerHTML = markdown.toHTML(text);
+    mkdn_box.innerHTML = markdown.toHTML(edit_box.value);
 
   } else {
     // Turned off
@@ -142,17 +141,13 @@ edit_box.addEventListener('input', function () {
 }, false);
 window.addEventListener('unload', save_settings, false);
 
-function get_edit_text() {
-  return edit_box.innerText.replace(/\u00a0/g, ' ');
-}
-
 save_btn.onclick = function () {
   var filename = file_name.value;
   if (filename == '') {
     filename = 'untitled.txt';
   }
   save_btn.download = filename;
-  save_btn.href = 'data:application/octet-stream,' + escape(get_edit_text());
+  save_btn.href = 'data:application/octet-stream,' + escape(edit_box.value);
 };
 
 open_btn.onclick = function () {
@@ -176,7 +171,7 @@ function open_file(e) {
     file_name.value = this.file.name;
     file_name.type = 'text';
 
-    edit_box.innerText = e.target.result;
+    edit_box.value = e.target.result;
 
     buttons.reset();
     update_mkdn();
