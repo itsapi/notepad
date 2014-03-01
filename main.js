@@ -137,7 +137,6 @@ function update_mkdn() {
 }
 
 edit_box.addEventListener('input', function () {
-  edit_box.innerText = get_edit_text();
   update_mkdn();
   save_settings();
 }, false);
