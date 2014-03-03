@@ -1,4 +1,4 @@
-Notepad
+(Notepad)[http://dvbris.com/public/notepad]
 =======
 
 An HTML notepad with save, open, local storage and markdown preview.
