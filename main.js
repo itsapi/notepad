@@ -187,12 +187,12 @@ open_dilg.addEventListener('change', open_file, false);
 document.onkeydown = function(e) {
   if (e.ctrlKey) {
     if (e.keyCode === 83) {
-      save_btn.click();
       console.log('ctrl-s');
+      save_btn.click();
       return false;
     } else if (e.keyCode === 79) {
-      open_btn.click();
       console.log('ctrl-o');
+      open_btn.click();
       return false;
     }
   };
