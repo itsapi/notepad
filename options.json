@@ -1,0 +1,6 @@
+{
+    "replace-keys": false,
+    "grunt": false,
+    "output": "/var/www/projects/notepad",
+    "ignore": []
+}
