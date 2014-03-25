@@ -1,8 +1,10 @@
 var buttons   = document.getElementById('buttons');
+var new_btn  = document.getElementById('new-btn');
 var open_btn  = document.getElementById('open-btn');
 var save_btn  = document.getElementById('save-btn');
 var drive_save_btn  = document.getElementById('drive-save-btn');
 var file_name = document.getElementById('file-name');
+var files_list = document.getElementById('files-list');
 var font_btn  = document.getElementById('font-btn');
 var mkdn_btn  = document.getElementById('mkdn-btn');
 var spell_btn = document.getElementById('spell-btn');
@@ -249,3 +251,17 @@ function open_file(e) {
 }
 
 open_dilg.addEventListener('change', open_file, false);
+
+document.onkeydown = function(e) {
+  if (e.ctrlKey) {
+    if (e.keyCode === 83) {
+      console.log('ctrl-s');
+      save_btn.click();
+      return false;
+    } else if (e.keyCode === 79) {
+      console.log('ctrl-o');
+      open_btn.click();
+      return false;
+    }
+  };
+};

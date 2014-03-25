@@ -64,6 +64,8 @@ html, body {
 }
 #edit-box {
   width: 100%;
+  height: -webkit-calc(100% - 40px);
+  height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
   margin: 0;
   padding: 10px;
@@ -84,6 +86,8 @@ html, body {
 }
 #mkdn-box {
   width: 50%;
+  height: -webkit-calc(100% - 40px);
+  height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
   margin: 0;
   padding: 0 10px;
