@@ -121,34 +121,34 @@ drive_save_btn.onclick = function () {
     filename = 'untitled.txt';
   }
 
-  checkAuth(
-    function (authResult) {
-      if (authResult) {
+  function handleAuthResult(authResult) {
+    if (authResult) {
 
-        var request = new ajaxRequest()
-        request.onreadystatechange = function() {
-          if (request.readyState == 4) {
-            if (request.status == 200 || window.location.href.indexOf("http") == -1) {
-              console.log(request.responseText)
-              alert('Added to Drive.')
-            } else {
-              console.log("An error occured while making the request")
-            }
+      var request = new ajaxRequest()
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          if (request.status == 200 || window.location.href.indexOf("http") == -1) {
+            console.log(request.responseText)
+            alert('Added to Drive.')
+          } else {
+            console.log("An error occured while making the request")
           }
         }
-        request.open("POST", "https://www.googleapis.com/upload/drive/v2/files?uploadType=media", true)
-        request.setRequestHeader("Content-Type", "text/plain")
-        request.setRequestHeader("Authorization", "Bearer " + gapi.auth.getToken().access_token)
-        request.send(edit_box.value)
-
-      } else {
-        // No access token could be retrieved, force the authorization flow.
-        gapi.auth.authorize(
-          {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
-          handleAuthResult);
       }
+      request.open("POST", "https://www.googleapis.com/upload/drive/v2/files?uploadType=media", true)
+      request.setRequestHeader("Content-Type", "text/plain")
+      request.setRequestHeader("Authorization", "Bearer " + gapi.auth.getToken().access_token)
+      request.send(edit_box.value)
+
+    } else {
+      // No access token could be retrieved, force the authorization flow.
+      gapi.auth.authorize(
+        {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
+        handleAuthResult);
     }
-  );
+  }
+
+  checkAuth(handleAuthResult);
 };
 
 function save_settings() {
