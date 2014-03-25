@@ -1,6 +1,7 @@
 var buttons   = document.getElementById('buttons');
 var open_btn  = document.getElementById('open-btn');
 var save_btn  = document.getElementById('save-btn');
+var drive_save_btn  = document.getElementById('drive-save-btn');
 var file_name = document.getElementById('file-name');
 var font_btn  = document.getElementById('font-btn');
 var mkdn_btn  = document.getElementById('mkdn-btn');
@@ -8,6 +9,13 @@ var spell_btn = document.getElementById('spell-btn');
 var edit_box  = document.getElementById('edit-box');
 var open_dilg = document.getElementById('open-dilg');
 var mkdn_box  = document.getElementById('mkdn-box');
+
+var CLIENT_ID = '331834941851-br3a7jka7qlq4vrvhcte54do7ho031ut.apps.googleusercontent.com';
+var SCOPES = [
+  'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/userinfo.email',
+  'https://www.googleapis.com/auth/userinfo.profile',
+];
 
 function ToggleBtn(element, name, cb, _default) {
   this.cb = cb;
@@ -81,6 +89,66 @@ var spell_toggle = new ToggleBtn(
   true);
 spell_btn.onclick = function () { spell_toggle.toggle(); };
 
+
+function ajaxRequest() {
+  var activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
+  if (window.ActiveXObject) {
+    for (var i = 0; i < activexmodes.length; i++) {
+      try {
+        return new ActiveXObject(activexmodes[i])
+      } catch(e) {
+        console.log('No HttpRequest object.')
+      }
+    }
+  } else if (window.XMLHttpRequest) {
+    return new XMLHttpRequest()
+  } else {
+    return false
+  }
+}
+
+function checkAuth(cb) {
+  gapi.auth.authorize(
+    {'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': true},
+    cb);
+}
+
+drive_save_btn.onclick = function () {
+  var filename = file_name.value;
+  if (filename == '') {
+    filename = 'untitled.txt';
+  }
+
+  checkAuth(
+    function (authResult) {
+      if (authResult) {
+
+        var request = new ajaxRequest()
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            if (request.status == 200 || window.location.href.indexOf("http") == -1) {
+              console.log(request.responseText)
+              alert('Added to Drive.')
+            } else {
+              console.log("An error occured while making the request")
+            }
+          }
+        }
+        request.open("POST", "https://www.googleapis.com/upload/drive/v2/files?uploadType=media", true)
+        request.setRequestHeader("Content-Type", "text/plain")
+        request.setRequestHeader("Authorization", "Bearer " + gapi.auth.getToken().access_token)
+        request.send(edit_box.value)
+
+      } else {
+        // No access token could be retrieved, force the authorization flow.
+        gapi.auth.authorize(
+          {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
+          handleAuthResult);
+      }
+    }
+  );
+};
+
 function save_settings() {
   localStorage.setItem('file-name', file_name.value);
   localStorage.setItem('edit-box', edit_box.value);
@@ -147,7 +215,7 @@ save_btn.onclick = function () {
     filename = 'untitled.txt';
   }
   save_btn.download = filename;
-  save_btn.href = 'data:application/octet-stream,' + escape(edit_box.value);
+  save_btn.href = 'data:text/octet-stream,' + escape(edit_box.value);
 };
 
 open_btn.onclick = function () {
