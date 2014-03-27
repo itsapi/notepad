@@ -5,6 +5,7 @@ var save_btn  = document.getElementById('save-btn');
 var drive_save_btn  = document.getElementById('drive-save-btn');
 var file_name = document.getElementById('file-name');
 var files_list = document.getElementById('files-list');
+var status_bar = document.getElementById('status-bar');
 var font_btn  = document.getElementById('font-btn');
 var mkdn_btn  = document.getElementById('mkdn-btn');
 var spell_btn = document.getElementById('spell-btn');
@@ -149,10 +150,36 @@ drive_save_btn.onclick = function () {
 
   checkAuth(function (authResult) {
     handleAuthResult(authResult);
-    drive_upload(filename, 'text/plain', edit_box.value, function (a) {console.log(a)});
+    new_status('Uploading...')
+    drive_upload(
+      filename,
+      'text/plain',
+      edit_box.value,
+      function (response) {
+        if (!response.error) {
+          message = 'File uploaded to Drive successfully.';
+        } else {
+          message = 'Failed to upload to Drive, please try again.';
+        }
+        new_status(message);
+      });
   });
-
 };
+
+function new_status(message) {
+  status_bar.classList.remove('on');
+  console.log(message);
+  status_bar.innerText = message;
+  status_bar.classList.add('on');
+  setTimeout(
+    (function (old) {
+      return function () {
+        if (status_bar.innerText == old) {
+          status_bar.classList.remove('on');
+        }
+      };
+    })(message), 7000);
+}
 
 function save_settings() {
   localStorage.setItem('file-name', file_name.value);
