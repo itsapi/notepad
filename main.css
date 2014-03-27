@@ -102,7 +102,7 @@ html, body {
 
 #status-bar {
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 }
 #status-bar.on {
   opacity: 1;
