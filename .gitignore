@@ -1,2 +1,5 @@
-sftp-config.json
 *.sublime-*
+build
+node_modules
+tmp
+main.min.js
