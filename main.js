@@ -91,28 +91,54 @@ var spell_toggle = new ToggleBtn(
   true);
 spell_btn.onclick = function () { spell_toggle.toggle(); };
 
+function checkAuth(cb) {
+  gapi.auth.authorize(
+      {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': true},
+      cb);
+}
 
-function ajaxRequest() {
-  var activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
-  if (window.ActiveXObject) {
-    for (var i = 0; i < activexmodes.length; i++) {
-      try {
-        return new ActiveXObject(activexmodes[i])
-      } catch(e) {
-        console.log('No HttpRequest object.')
-      }
-    }
-  } else if (window.XMLHttpRequest) {
-    return new XMLHttpRequest()
+function handleAuthResult(authResult) {
+  if (authResult.error) {
+    gapi.auth.authorize(
+        {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
+        handleAuthResult);
   } else {
-    return false
+    console.log('Successfully Authorized');
   }
 }
 
-function checkAuth(cb) {
-  gapi.auth.authorize(
-    {'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': true},
-    cb);
+function drive_upload(filename, filetype, filedata, cb) {
+  const boundary = '-------314159265358979323846';
+  const delimiter = "\r\n--" + boundary + "\r\n";
+  const close_delim = "\r\n--" + boundary + "--";
+
+  var metadata = {
+    'title': filename,
+    'mimeType': filetype
+  };
+
+  var base64Data = btoa(filedata);
+  var multipartRequestBody =
+      delimiter +
+      'Content-Type: application/json\r\n\r\n' +
+      JSON.stringify(metadata) +
+      delimiter +
+      'Content-Type: ' + filetype + '\r\n' +
+      'Content-Transfer-Encoding: base64\r\n' +
+      '\r\n' +
+      base64Data +
+      close_delim;
+
+  var request = gapi.client.request({
+      'path': '/upload/drive/v2/files',
+      'method': 'POST',
+      'params': {'uploadType': 'multipart'},
+      'headers': {
+        'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+      },
+      'body': multipartRequestBody});
+
+  request.execute(cb);
 }
 
 drive_save_btn.onclick = function () {
@@ -121,34 +147,11 @@ drive_save_btn.onclick = function () {
     filename = 'untitled.txt';
   }
 
-  function handleAuthResult(authResult) {
-    if (authResult) {
+  checkAuth(function (authResult) {
+    handleAuthResult(authResult);
+    drive_upload(filename, 'text/plain', edit_box.value, function (a) {console.log(a)});
+  });
 
-      var request = new ajaxRequest()
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          if (request.status == 200 || window.location.href.indexOf("http") == -1) {
-            console.log(request.responseText)
-            alert('Added to Drive.')
-          } else {
-            console.log("An error occured while making the request")
-          }
-        }
-      }
-      request.open("POST", "https://www.googleapis.com/upload/drive/v2/files?uploadType=media", true)
-      request.setRequestHeader("Content-Type", "text/plain")
-      request.setRequestHeader("Authorization", "Bearer " + gapi.auth.getToken().access_token)
-      request.send(edit_box.value)
-
-    } else {
-      // No access token could be retrieved, force the authorization flow.
-      gapi.auth.authorize(
-        {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
-        handleAuthResult);
-    }
-  }
-
-  checkAuth(handleAuthResult);
 };
 
 function save_settings() {
