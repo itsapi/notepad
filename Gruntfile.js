@@ -9,7 +9,17 @@ module.exports = function(grunt) {
           banner: '/*! <%= pkg.name %> <%= grunt.template.today() %> */\n\n'
         },
         files: {
-          'build/js/main.min.js': ['src/js/*.js', '!src/js/main.min.js']
+          'build/js/main.min.js': [
+            'src/js/utils.js',
+            'src/js/resources.js',
+            'src/js/selectors.js',
+            'src/js/drive.js',
+            'src/js/buttons.js',
+            'src/js/settings.js',
+            'src/js/listeners.js',
+
+            '!src/js/main.min.js'
+          ]
         }
       }
     },
