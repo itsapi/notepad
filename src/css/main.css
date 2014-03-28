@@ -28,7 +28,7 @@ html, body {
 #buttons fieldset:last-child {
   float: right;
 }
-[id*=btn], #buttons input[type=text] {
+[id*=btn], #buttons #file-name {
   display: inline-block;
   height: 40px;
   padding: 10px 15px;
@@ -37,8 +37,6 @@ html, body {
   font-size: 1em;
   color: rgba(0, 0, 0, 1);
   text-decoration: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 [id*=btn] {
@@ -49,7 +47,7 @@ html, body {
   background-color: rgba(0, 0, 50, .15);
   color: rgba(0, 0, 15, .7);
 }
-#buttons input[type=text] {
+#buttons #file-name {
   border-left: 1px solid rgba(0, 0, 0, .1);
   border-right: 1px solid rgba(0, 0, 0, .1);
   height: 100%;
@@ -64,8 +62,6 @@ html, body {
 }
 #edit-box {
   width: 100%;
-  height: -webkit-calc(100% - 40px);
-  height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
   margin: 0;
   padding: 10px;
@@ -75,8 +71,6 @@ html, body {
   border: none;
   resize: none;
   font-family: sans-serif;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 #edit-box.mkdn-on {
@@ -86,8 +80,6 @@ html, body {
 }
 #mkdn-box {
   width: 50%;
-  height: -webkit-calc(100% - 40px);
-  height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
   margin: 0;
   padding: 0 10px;
@@ -95,7 +87,5 @@ html, body {
   font-size: 1.1em;
   border: none;
   display: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
