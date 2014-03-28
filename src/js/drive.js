@@ -55,30 +55,6 @@ function drive_upload(filename, filetype, filedata, cb) {
   request.execute(cb);
 }
 
-drive_save_btn.onclick = function () {
-  var filename = file_name.value;
-  if (filename == '') {
-    filename = 'untitled.txt';
-  }
-
-  checkAuth(function (authResult) {
-    handleAuthResult(authResult);
-    new_status('Uploading...')
-    drive_upload(
-      filename,
-      'text/plain',
-      edit_box.value,
-      function (response) {
-        if (!response.error) {
-          message = 'File uploaded to Drive successfully.';
-        } else {
-          message = 'Failed to upload to Drive, please try again.';
-        }
-        new_status(message);
-      });
-  });
-};
-
 function new_status(message) {
   status_bar.classList.remove('on');
   setTimeout(function () {

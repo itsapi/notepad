@@ -1,37 +1,61 @@
-edit_box.addEventListener('input', function () {
+addEvent(edit_box, 'input', function () {
   update_mkdn();
   save_settings();
-}, false);
+});
 
-window.addEventListener('unload', save_settings, false);
+addEvent(window, 'unload', save_settings);
 
-save_btn.onclick = function () {
+addEvent(save_btn, 'click', function () {
   var filename = file_name.value;
   if (filename == '') {
     filename = 'untitled.txt';
   }
   save_btn.download = filename;
   save_btn.href = 'data:text/octet-stream,' + escape(edit_box.value);
-};
+});
 
-open_btn.onclick = function () {
+addEvent(open_btn, 'click', function () {
   if (window.File && window.FileReader && window.FileList && window.Blob) {
     open_dilg.click();
   } else {
     alert('The File APIs are not fully supported in this browser.');
   }
   return false;
-};
+});
 
-font_btn.onclick = function () { font_toggle.toggle(); };
-mkdn_btn.onclick = function () { mkdn_toggle.toggle(); };
-spell_btn.onclick = function () { spell_toggle.toggle(); };
+addEvent(drive_save_btn, 'click', function () {
+  var filename = file_name.value;
+  if (filename == '') {
+    filename = 'untitled.txt';
+  }
+
+  checkAuth(function (authResult) {
+    handleAuthResult(authResult);
+    new_status('Uploading...')
+    drive_upload(
+      filename,
+      'text/plain',
+      edit_box.value,
+      function (response) {
+        if (!response.error) {
+          message = 'File uploaded to Drive successfully.';
+        } else {
+          message = 'Failed to upload to Drive, please try again.';
+        }
+        new_status(message);
+      });
+  });
+});
+
+addEvent(font_btn, 'click', function () { font_toggle.toggle(); });
+addEvent(mkdn_btn, 'click', function () { mkdn_toggle.toggle(); });
+addEvent(spell_btn, 'click', function () { spell_toggle.toggle(); });
 
 // This event is triggered after you select a file
 //  in the process started above.
-open_dilg.addEventListener('change', open_file, false);
+addEvent(open_dilg, 'change', open_file);
 
-document.onkeydown = function(e) {
+addEvent(document, 'keydown', function(e) {
   if (e.ctrlKey) {
     if (e.keyCode === 83) {
       console.log('ctrl-s');
@@ -43,4 +67,4 @@ document.onkeydown = function(e) {
       return false;
     }
   };
-};
+});
