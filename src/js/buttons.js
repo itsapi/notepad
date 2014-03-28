@@ -69,3 +69,40 @@ var spell_toggle = new ToggleBtn(
   },
   true);
 spell_btn.onclick = function () { spell_toggle.toggle(); };
+
+
+function update_mkdn() {
+  if (mkdn_toggle.value) {
+    // Turned on
+    mkdn_box.style.display = 'inline-block';
+    edit_box.classList.add('mkdn-on');
+
+    mkdn_box.innerHTML = markdown.toHTML(edit_box.value);
+
+  } else {
+    // Turned off
+    mkdn_box.style.display = 'none';
+    edit_box.classList.remove('mkdn-on');
+  }
+}
+
+function open_file(e) {
+  var file = e.target.files;
+
+  var reader = new FileReader();
+  reader.file = file[0]
+  reader.onload = function(e) {
+
+    // For some reason it wont set the value while it's a text input...
+    file_name.type = 'hidden';
+    file_name.value = this.file.name;
+    file_name.type = 'text';
+
+    edit_box.value = e.target.result;
+
+    buttons.reset();
+    update_mkdn();
+  };
+
+  reader.readAsText(file[0]);
+}

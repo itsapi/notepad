@@ -1,22 +1,8 @@
-function update_mkdn() {
-  if (mkdn_toggle.value) {
-    // Turned on
-    mkdn_box.style.display = 'inline-block';
-    edit_box.classList.add('mkdn-on');
-
-    mkdn_box.innerHTML = markdown.toHTML(edit_box.value);
-
-  } else {
-    // Turned off
-    mkdn_box.style.display = 'none';
-    edit_box.classList.remove('mkdn-on');
-  }
-}
-
 edit_box.addEventListener('input', function () {
   update_mkdn();
   save_settings();
 }, false);
+
 window.addEventListener('unload', save_settings, false);
 
 save_btn.onclick = function () {
@@ -36,28 +22,8 @@ open_btn.onclick = function () {
   }
   return false;
 };
-
-function open_file(e) {
-  var file = e.target.files;
-
-  var reader = new FileReader();
-  reader.file = file[0]
-  reader.onload = function(e) {
-
-    // For some reason it wont set the value while it's a text input...
-    file_name.type = 'hidden';
-    file_name.value = this.file.name;
-    file_name.type = 'text';
-
-    edit_box.value = e.target.result;
-
-    buttons.reset();
-    update_mkdn();
-  };
-
-  reader.readAsText(file[0]);
-}
-
+// This event is triggered after you select a file
+//  in the process started above.
 open_dilg.addEventListener('change', open_file, false);
 
 document.onkeydown = function(e) {

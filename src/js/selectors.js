@@ -5,6 +5,7 @@ var save_btn  = document.getElementById('save-btn');
 var drive_save_btn  = document.getElementById('drive-save-btn');
 var file_name = document.getElementById('file-name');
 var files_list = document.getElementById('files-list');
+var status_bar = document.getElementById('status-bar');
 var font_btn  = document.getElementById('font-btn');
 var mkdn_btn  = document.getElementById('mkdn-btn');
 var spell_btn = document.getElementById('spell-btn');
