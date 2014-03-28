@@ -13,9 +13,9 @@ module.exports = function(grunt) {
             'src/js/utils.js',
             'src/js/resources.js',
             'src/js/selectors.js',
-            'src/js/drive.js',
-            'src/js/buttons.js',
+            'src/js/controls.js',
             'src/js/settings.js',
+            'src/js/drive.js',
             'src/js/listeners.js',
 
             '!src/js/main.min.js'

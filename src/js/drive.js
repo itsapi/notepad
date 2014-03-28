@@ -54,20 +54,3 @@ function drive_upload(filename, filetype, filedata, cb) {
 
   request.execute(cb);
 }
-
-function new_status(message) {
-  status_bar.classList.remove('on');
-  setTimeout(function () {
-    console.log(message);
-    status_bar.innerText = message;
-    status_bar.classList.add('on');
-    setTimeout(
-      (function (old) {
-        return function () {
-          if (status_bar.innerText == old) {
-            status_bar.classList.remove('on');
-          }
-        };
-    })(message), 7000);
-  }, 500)
-}
