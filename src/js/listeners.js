@@ -2,6 +2,7 @@ edit_box.addEventListener('input', function () {
   update_mkdn();
   save_settings();
 }, false);
+
 window.addEventListener('unload', save_settings, false);
 
 save_btn.onclick = function () {
@@ -25,6 +26,9 @@ open_btn.onclick = function () {
 font_btn.onclick = function () { font_toggle.toggle(); };
 mkdn_btn.onclick = function () { mkdn_toggle.toggle(); };
 spell_btn.onclick = function () { spell_toggle.toggle(); };
+
+// This event is triggered after you select a file
+//  in the process started above.
 open_dilg.addEventListener('change', open_file, false);
 
 document.onkeydown = function(e) {
