@@ -101,8 +101,4 @@ function open_file(e) {
   };
 
   reader.readAsText(file[0]);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f4a5de4ceffd3da692a5bddab92a36b491009986
