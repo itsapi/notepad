@@ -1,3 +1,4 @@
+var title      = document.getElementsByTagName('title')[0];
 var buttons    = document.getElementById('buttons');
 var new_btn    = document.getElementById('new-btn');
 var open_btn   = document.getElementById('open-btn');

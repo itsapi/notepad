@@ -9,6 +9,7 @@ function save_settings() {
 function load_settings() {
   file_name.value = localStorage.getItem('file-name');
   edit_box.value = localStorage.getItem('edit-box');
+  update_file_name()
 
   var store_font = localStorage.getItem('font');
   var font = (store_font == 'true') ? true : false

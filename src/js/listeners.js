@@ -23,13 +23,15 @@ open_btn.onclick = function () {
   return false;
 };
 
+// This event is triggered after you select a file
+//  in the process started above.
+open_dilg.addEventListener('change', open_file, false);
+
 font_btn.onclick = function () { font_toggle.toggle(); };
 mkdn_btn.onclick = function () { mkdn_toggle.toggle(); };
 spell_btn.onclick = function () { spell_toggle.toggle(); };
 
-// This event is triggered after you select a file
-//  in the process started above.
-open_dilg.addEventListener('change', open_file, false);
+file_name.addEventListener('input', update_file_name, false);
 
 document.onkeydown = function(e) {
   if (e.ctrlKey) {

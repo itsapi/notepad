@@ -82,6 +82,10 @@ function update_mkdn() {
   }
 }
 
+function update_file_name() {
+  title.innerText = 'Notepad - ' + file_name.value;
+};
+
 function open_file(e) {
   var file = e.target.files;
 
