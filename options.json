@@ -1,6 +1,4 @@
 {
-    "replace-keys": false,
     "grunt": true,
-    "output": "/var/www/projects/notepad",
-    "ignore": []
+    "output": "/var/www/projects/notepad"
 }
