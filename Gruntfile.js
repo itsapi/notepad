@@ -16,9 +16,7 @@ module.exports = function(grunt) {
             'src/js/controls.js',
             'src/js/settings.js',
             'src/js/drive.js',
-            'src/js/listeners.js',
-
-            '!src/js/main.min.js'
+            'src/js/listeners.js'
           ]
         }
       }
@@ -42,6 +40,14 @@ module.exports = function(grunt) {
     },
 
     // HTML
+    processhtml: {
+      main: {
+        expand: true,
+        cwd: 'src',
+        src: ['**/*.html'],
+        dest: 'tmp/'
+      }
+    },
     htmlmin: {
       main: {
         options: {
@@ -56,7 +62,7 @@ module.exports = function(grunt) {
           removeOptionalTags: true
         },
         expand: true,
-        cwd: 'src',
+        cwd: 'tmp',
         src: ['**/*.html'],
         dest: 'build/'
       }
@@ -67,6 +73,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-processhtml');
 
-  grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin', 'htmlmin']);
+  grunt.registerTask('default', [
+    'uglify',
+    'autoprefixer',
+    'cssmin',
+    'processhtml',
+    'htmlmin'
+  ]);
 };
