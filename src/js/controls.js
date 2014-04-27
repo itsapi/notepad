@@ -7,17 +7,17 @@ function ToggleBtn(element, name, cb, _default) {
   this.value = _default;
 
   if (_default) {
-    this.element.innerText = this.on;
+    this.element.innerHTML = this.on;
   } else {
-    this.element.innerText = this.off;
+    this.element.innerHTML = this.off;
   }
 
   this.toggle = function () {
     if (this.value) {
-      this.element.innerText = this.off;
+      this.element.innerHTML = this.off;
       this.value = false;
     } else {
-      this.element.innerText = this.on;
+      this.element.innerHTML = this.on;
       this.value = true;
     }
     this.cb(this.value);
@@ -26,9 +26,9 @@ function ToggleBtn(element, name, cb, _default) {
   this.set = function (value) {
     this.value = value;
     if (this.value) {
-      this.element.innerText = this.on;
+      this.element.innerHTML = this.on;
     } else {
-      this.element.innerText = this.off;
+      this.element.innerHTML = this.off;
     }
     this.cb(this.value);
   };
@@ -83,7 +83,7 @@ function update_mkdn() {
 }
 
 function update_file_name() {
-  title.innerText = 'Notepad - ' + file_name.value;
+  title.innerHTML = 'Notepad - ' + file_name.value;
 };
 
 function open_file(e) {
@@ -111,12 +111,12 @@ function new_status(message) {
   status_bar.classList.remove('on');
   setTimeout(function () {
     console.log(message);
-    status_bar.innerText = message;
+    status_bar.innerHTML = message;
     status_bar.classList.add('on');
     setTimeout(
       (function (old) {
         return function () {
-          if (status_bar.innerText == old) {
+          if (status_bar.innerHTML == old) {
             status_bar.classList.remove('on');
           }
         };
