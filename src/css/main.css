@@ -97,3 +97,8 @@ html, body {
 #status-bar.on {
   opacity: 1;
 }
+
+@media print {
+  #buttons, #edit-box { display: none; }
+  #mkdn-box { display: block; width: 100%; overflow: visible; }
+}

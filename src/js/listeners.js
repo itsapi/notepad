@@ -23,6 +23,10 @@ addEvent(open_btn, 'click', function () {
   return false;
 });
 
+addEvent(print_btn, 'click', function() {
+  window.print();
+});
+
 // This event is triggered after you select a file
 //  in the process started above.
 addEvent(open_dilg, 'change', open_file);

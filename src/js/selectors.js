@@ -3,6 +3,7 @@ var buttons    = document.getElementById('buttons');
 var new_btn    = document.getElementById('new-btn');
 var open_btn   = document.getElementById('open-btn');
 var save_btn   = document.getElementById('save-btn');
+var print_btn   = document.getElementById('print-btn');
 var drive_save_btn  = document.getElementById('drive-save-btn');
 var file_name  = document.getElementById('file-name');
 var files_list = document.getElementById('files-list');
