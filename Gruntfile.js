@@ -10,6 +10,7 @@ module.exports = function(grunt) {
         },
         files: {
           'build/js/main.min.js': [
+            'src/js/google.js',
             'src/js/utils.js',
             'src/js/resources.js',
             'src/js/selectors.js',
