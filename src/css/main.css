@@ -99,6 +99,7 @@ html, body {
 }
 
 @media print {
+  html, body { overflow: visible; }
   #buttons, #edit-box { display: none; }
   #mkdn-box { display: block; width: 100%; overflow: visible; }
 }
