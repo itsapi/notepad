@@ -79,6 +79,9 @@ function update_mkdn() {
     // Turned off
     mkdn_box.style.display = 'none';
     edit_box.classList.remove('mkdn-on');
+
+    mkdn_box.innerText = edit_box.value;
+
   }
 }
 
