@@ -1,4 +1,5 @@
 {
     "grunt": true,
+	"build_dir": "build",
     "output": "/var/www/projects/notepad"
 }
