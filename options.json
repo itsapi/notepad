@@ -1,5 +1,5 @@
 {
-    "build_cmd": ["npm update", "./node_modules/.bin/grunt"],
+    "build_cmd": ["npm install", "./node_modules/.bin/grunt"],
     "copy_from": "build",
     "copy_to": "/var/www/projects/notepad"
 }
