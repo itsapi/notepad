@@ -65,11 +65,11 @@ addEvent(document, 'keydown', function(e) {
     if (e.keyCode === 83) {
       console.log('ctrl-s');
       save_btn.click();
-      return false;
+      e.preventDefault();
     } else if (e.keyCode === 79) {
       console.log('ctrl-o');
       open_btn.click();
-      return false;
+      e.preventDefault();
     }
   };
 });
